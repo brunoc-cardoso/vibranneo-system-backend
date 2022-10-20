@@ -1,9 +1,10 @@
 {
   "name": "auth-backend",
   "version": "1.0.0",
-  "main": "server.js",
+  "main": "index.js",
   "license": "MIT",
   "scripts": {
+    "start": "node scr/index.ts",
     "dev": "NODE_ENV=development tsnd --ignore-watch node_modules --respawn --transpile-only src/server.ts"
   },
   "devDependencies": {
