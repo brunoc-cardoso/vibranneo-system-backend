@@ -5,6 +5,7 @@ import dotenv from 'dotenv';
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 3000;
 
 app.use(express.json());
 app.use(cors());
@@ -15,6 +16,6 @@ app.get('/healthy', (request: Request, response: Response) => {
   });
 });
 
-app.listen(process.env.PORT, () => {
-  console.log(`🚀 Server is running on port ${process.env.PORT}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server is running on port ${PORT}`);
 });
