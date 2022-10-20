@@ -4,8 +4,10 @@
   "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "tsc && node dist/src/index.js",
-    "dev": "NODE_ENV=development tsnd --ignore-watch node_modules --respawn --transpile-only src/index.ts"
+    "start": "node dist/src/index.js",
+    "build": "tsc",
+    "dev": "NODE_ENV=development tsnd --ignore-watch node_modules --respawn --transpile-only src/index.ts",
+    "heroku-postbuild": "ng build --prod"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
