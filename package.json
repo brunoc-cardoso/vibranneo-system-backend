@@ -1,11 +1,11 @@
 {
   "name": "auth-backend",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dist/index.js",
   "license": "MIT",
   "scripts": {
-    "start": "node scr/index.ts",
-    "dev": "NODE_ENV=development tsnd --ignore-watch node_modules --respawn --transpile-only src/server.ts"
+    "start": "tsc && node dist/src/index.js",
+    "dev": "NODE_ENV=development tsnd --ignore-watch node_modules --respawn --transpile-only src/index.ts"
   },
   "devDependencies": {
     "@types/cors": "^2.8.10",
@@ -24,6 +24,6 @@
     "uuid": "^8.3.2"
   },
   "engines": {
-    "node": "14.x"
+    "node": "16.x"
   }
 }
