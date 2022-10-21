@@ -6,12 +6,11 @@ generator client {
 }
 
 datasource db {
-  provider          = "postgresql"
-  url               = env("DATABASE_URL")
-  shadowDatabaseUrl = env("DATABASE_URL")
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
-model User {
+model Users {
   id              Int      @id @default(autoincrement())
   name            String   @unique
   email           String   @unique
@@ -23,4 +22,25 @@ model User {
   updatedAt       DateTime @updatedAt
 
   @@map("users")
+}
+
+model Applications {
+  app_id         Int             @id @default(autoincrement())
+  app_name       String
+  app_token      String          @default(uuid())
+  ActiveChannels ActiveChannels?
+
+  @@map("applications")
+}
+
+model ActiveChannels {
+  id      Int      @id @default(autoincrement())
+  webpush Boolean? @default(false)
+  email   Boolean? @default(false)
+  sms     Boolean? @default(false)
+
+  application    Applications @relation(fields: [application_id], references: [app_id])
+  application_id Int          @unique
+
+  @@map("active_channels")
 }
