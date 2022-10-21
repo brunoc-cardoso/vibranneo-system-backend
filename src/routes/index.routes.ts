@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
-import { userRoute } from '@/routes/user.routes';
-import { applicationRoute } from '@/routes/application.routes';
+import { userRoute } from './user.routes';
+import { applicationRoute } from './application.routes';
 
 const routes = Router();
 

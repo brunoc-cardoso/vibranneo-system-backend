@@ -1,6 +1,6 @@
 import { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
-import { prisma } from '@/config/prisma';
+import { prisma } from '../config/prisma';
 
 const userRoute = Router();
 
