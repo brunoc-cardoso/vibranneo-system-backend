@@ -7,7 +7,7 @@
     "dev": "NODE_ENV=development tsnd --ignore-watch node_modules --respawn --transpile-only -r tsconfig-paths/register src/index.ts",
     "build": "rm -rf dist && tsc",
     "start": "node dist/index.js",
-    "postinstall": "yarn build"
+    "postinstall": "link-module-alias"
   },
   "devDependencies": {
     "@types/bcrypt": "^5.0.0",
@@ -16,6 +16,7 @@
     "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^18.11.3",
     "@types/uuid": "^8.3.0",
+    "link-module-alias": "^1.2.0",
     "prism": "^4.1.2",
     "prisma": "^4.5.0",
     "ts-node-dev": "^1.1.6",
@@ -38,6 +39,6 @@
     "node": "16.x"
   },
   "_moduleAliases": {
-    "@": "./dist/"
+    "@": "dist/"
   }
 }
