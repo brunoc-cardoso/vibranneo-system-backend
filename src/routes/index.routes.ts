@@ -1,5 +1,6 @@
 import { Request, Response, Router } from 'express';
 import { userRoute } from '@/routes/user.routes';
+import { applicationRoute } from '@/routes/application.routes';
 
 const routes = Router();
 
@@ -9,6 +10,7 @@ routes.get('/healthy', (request: Request, response: Response) => {
   });
 });
 
-// routes.use('/users', userRoute);
+routes.use('/users', userRoute);
+// routes.use('/application', applicationRoute);
 
 export { routes };
