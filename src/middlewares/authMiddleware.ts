@@ -1,6 +1,6 @@
-import { NextFunction, Request, Response, Router } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import jwt from 'jsonwebtoken';
-import { authConfig } from '../config/auth';
+import { AppError } from '../errors/AppError';
 
 type TokenPayload = {
   id: number;
@@ -16,26 +16,19 @@ export default function (
   const { authorization } = request.headers;
 
   if (!authorization) {
-    return response.status(401).json({
-      error: 'Token is not valid',
-    });
+    throw new AppError('Token is not valid', 401);
   }
 
   const [, token] = authorization.split(' ');
 
   try {
-    console.log('[authConfig.secret]: ', authConfig.secret);
-    const data = jwt.verify(token, authConfig.secret);
+    const data = jwt.verify(token, process.env.SECRET_KEY);
 
     const { id } = data as TokenPayload;
-    request.id = id;
-
-    console.log('[id]: ', id);
+    request.userId = id;
 
     return next();
   } catch {
-    return response.status(401).json({
-      error: 'Token is not valid',
-    });
+    throw new AppError('Token is not valid', 401);
   }
 }
