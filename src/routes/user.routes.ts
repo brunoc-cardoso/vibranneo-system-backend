@@ -1,33 +1,35 @@
 import { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
 import { prisma } from '../config/prisma';
+import authMiddleware from '../middlewares/authMiddleware';
 
-const userRoute = Router();
+const userRouter = Router();
 
-userRoute.get('/:id', async (request: Request, response: Response) => {
-  const { id } = request.params;
+userRouter.get(
+  '/:id',
+  authMiddleware,
+  async (request: Request, response: Response) => {
+    const { id } = request.params;
 
-  const user = await prisma.users.findUnique({
-    where: {
-      id: Number(id),
-    },
-  });
-
-  if (!user) {
-    response.status(400).json({
-      error: 'User not found',
+    const user = await prisma.users.findUnique({
+      where: {
+        id: Number(id),
+      },
     });
-  }
 
-  response.status(200).json({
-    message: 'user created successfully',
-    data: {
+    if (!user) {
+      response.status(400).json({
+        error: 'User not found',
+      });
+    }
+
+    response.status(200).json({
       user,
-    },
-  });
-});
+    });
+  },
+);
 
-userRoute.post('/create', async (request: Request, response: Response) => {
+userRouter.post('/create', async (request: Request, response: Response) => {
   const { user } = request.body;
 
   const isAlreadyExist = await prisma.users.findFirst({
@@ -44,7 +46,7 @@ userRoute.post('/create', async (request: Request, response: Response) => {
   });
 
   if (isAlreadyExist) {
-    response.status(400).json({
+    return response.status(400).json({
       error: 'User already exists',
     });
   }
@@ -57,7 +59,7 @@ userRoute.post('/create', async (request: Request, response: Response) => {
     },
   });
 
-  response.status(201).json({
+  return response.status(201).json({
     message: 'user created successfully',
     data: {
       id: newUser.id,
@@ -65,4 +67,4 @@ userRoute.post('/create', async (request: Request, response: Response) => {
   });
 });
 
-export { userRoute };
+export { userRouter };
