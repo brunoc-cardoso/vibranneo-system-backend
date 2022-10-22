@@ -1,16 +1,18 @@
 import { Request, Response, Router } from 'express';
-import { userRoute } from './user.routes';
+import { userRouter } from './user.routes';
+import { authRouter } from './auth.routes';
 // import { applicationRoute } from './application.routes';
 
-const routes = Router();
+const router = Router();
 
-routes.get('/healthy', (request: Request, response: Response) => {
+router.get('/healthy', (request: Request, response: Response) => {
   response.status(200).json({
     message: 'Server is running and working',
   });
 });
 
-routes.use('/users', userRoute);
-// routes.use('/application', applicationRoute);
+router.use('/auth', authRouter);
+router.use('/users', userRouter);
+// router.use('/application', applicationRoute);
 
-export { routes };
+export { router };

@@ -10,7 +10,8 @@
     "typeRoots": ["./node_modules/@types", "./src/@types"],
     "esModuleInterop": true,
     "skipLibCheck": true,
-    "forceConsistentCasingInFileNames": true
+    "forceConsistentCasingInFileNames": true,
+    "strictNullChecks": false
   },
   "include": ["src/**/*.ts"],
   "exclude": ["node_modules"]
