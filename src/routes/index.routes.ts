@@ -13,7 +13,7 @@ routes.get('/healthy', (request: Request, response: Response) => {
   });
 });
 
-routes.use('/auth', authRoutes);
+routes.use('/', authRoutes);
 routes.use('/users', userRoutes);
 routes.use('/apps', authMiddleware, applicationRoutes);
 routes.use('/channels', authMiddleware, channelsRoutes);
