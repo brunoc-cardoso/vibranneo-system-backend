@@ -4,6 +4,23 @@ import { AppError } from '../errors/AppError';
 
 const applicationRoutes = Router();
 
+applicationRoutes.get('/', async (request: Request, response: Response) => {
+  const applications = await prisma.applications.findMany({
+    where: {
+      user_id: request.userId,
+    },
+    include: {
+      ActiveChannels: true,
+    },
+  });
+
+  return response.status(200).json({
+    data: {
+      applications,
+    },
+  });
+});
+
 applicationRoutes.post('/', async (request: Request, response: Response) => {
   const { app_name } = request.body;
 

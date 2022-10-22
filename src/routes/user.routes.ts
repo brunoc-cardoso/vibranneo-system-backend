@@ -31,6 +31,8 @@ userRoutes.get(
 userRoutes.post('/create', async (request: Request, response: Response) => {
   const { user } = request.body;
 
+  console.log('[user]: ', user);
+
   const isAlreadyExist = await prisma.users.findFirst({
     where: {
       OR: [
