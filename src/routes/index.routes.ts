@@ -3,6 +3,7 @@ import authMiddleware from '../middlewares/authMiddleware';
 import { userRoutes } from './user.routes';
 import { authRoutes } from './auth.routes';
 import { applicationRoutes } from './application.routes';
+import { channelsRoutes } from './channels.routes';
 
 const routes = Router();
 
@@ -15,5 +16,6 @@ routes.get('/healthy', (request: Request, response: Response) => {
 routes.use('/auth', authRoutes);
 routes.use('/users', userRoutes);
 routes.use('/apps', authMiddleware, applicationRoutes);
+routes.use('/channels', authMiddleware, channelsRoutes);
 
 export { routes };
