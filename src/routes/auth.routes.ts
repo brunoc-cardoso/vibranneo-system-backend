@@ -2,11 +2,11 @@ import { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
 import { prisma } from '../config/prisma';
-import { authConfig } from '../config/auth';
+import { AppError } from '../errors/AppError';
 
-const authRouter = Router();
+const authRoutes = Router();
 
-authRouter.post('/login', async (request: Request, response: Response) => {
+authRoutes.post('/login', async (request: Request, response: Response) => {
   const { login, password } = request.body;
 
   const user = await prisma.users.findFirst({
@@ -23,30 +23,26 @@ authRouter.post('/login', async (request: Request, response: Response) => {
   });
 
   if (!user) {
-    return response.status(401).json({
-      error: 'Login and/or password is incorrect',
-    });
+    throw new AppError('Login and/or password is incorrect', 401);
   }
 
   const isValidPassword = await bcrypt.compare(password, user.password);
 
   if (!isValidPassword) {
-    return response.status(401).json({
-      error: 'Login and/or password is incorrect',
-    });
+    throw new AppError('Login and/or password is incorrect', 401);
   }
 
   const token = jwt.sign(
     {
       id: user.id,
     },
-    authConfig.secret,
+    process.env.SECRET_KEY,
     {
       expiresIn: '15d',
     },
   );
 
-  response.status(200).json({
+  return response.status(200).json({
     token,
     user: {
       id: user.id,
@@ -56,4 +52,4 @@ authRouter.post('/login', async (request: Request, response: Response) => {
   });
 });
 
-export { authRouter };
+export { authRoutes };

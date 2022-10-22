@@ -2,10 +2,11 @@ import { Request, Response, Router } from 'express';
 import bcrypt from 'bcrypt';
 import { prisma } from '../config/prisma';
 import authMiddleware from '../middlewares/authMiddleware';
+import { AppError } from '../errors/AppError';
 
-const userRouter = Router();
+const userRoutes = Router();
 
-userRouter.get(
+userRoutes.get(
   '/:id',
   authMiddleware,
   async (request: Request, response: Response) => {
@@ -18,9 +19,7 @@ userRouter.get(
     });
 
     if (!user) {
-      response.status(400).json({
-        error: 'User not found',
-      });
+      throw new AppError('User not found');
     }
 
     response.status(200).json({
@@ -29,7 +28,7 @@ userRouter.get(
   },
 );
 
-userRouter.post('/create', async (request: Request, response: Response) => {
+userRoutes.post('/create', async (request: Request, response: Response) => {
   const { user } = request.body;
 
   const isAlreadyExist = await prisma.users.findFirst({
@@ -46,9 +45,7 @@ userRouter.post('/create', async (request: Request, response: Response) => {
   });
 
   if (isAlreadyExist) {
-    return response.status(400).json({
-      error: 'User already exists',
-    });
+    throw new AppError('User already exists');
   }
 
   user.password = bcrypt.hashSync(user.password, 8);
@@ -67,4 +64,4 @@ userRouter.post('/create', async (request: Request, response: Response) => {
   });
 });
 
-export { userRouter };
+export { userRoutes };
